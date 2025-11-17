@@ -19,12 +19,18 @@ model Investor {
 }
 
 model Investment {
-  id         String     @id @default(uuid())
-  name       String
-  investorId String
-  investor   Investor   @relation(fields: [investorId], references: [id])
-  drawdowns  Drawdown[]
-  createdAt  DateTime   @default(now())
+  id                   String        @id @default(uuid())
+  name                 String
+  investorId           String
+  investor             Investor      @relation(fields: [investorId], references: [id])
+  drawdowns            Drawdown[]
+  transactions         Transaction[]
+  interestRate         Float?
+  compoundingFrequency String?
+  startDate            DateTime?
+  latestAccruedInterest Float?
+  lastCalculatedAt     DateTime?
+  createdAt            DateTime      @default(now())
 }
 
 model Drawdown {
@@ -37,5 +43,15 @@ model Drawdown {
   investment        Investment @relation(fields: [investmentId], references: [id])
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
+}
+
+model Transaction {
+  id           String     @id @default(uuid())
+  type         String     // DRAWDOWN, REPAYMENT, INTEREST_ACCRUAL
+  amount       Float
+  currency     String
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id])
+  createdAt    DateTime   @default(now())
 }
 
