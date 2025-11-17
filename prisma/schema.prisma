@@ -28,11 +28,14 @@ model Investment {
 }
 
 model Drawdown {
-  id           String     @id @default(uuid())
-  amount       Float
-  currency     String
-  investmentId String
-  investment   Investment @relation(fields: [investmentId], references: [id])
-  createdAt    DateTime   @default(now())
+  id                String     @id @default(uuid())
+  amount            Float
+  currency          String
+  convertedAmount   Float?
+  convertedCurrency String?
+  investmentId      String
+  investment        Investment @relation(fields: [investmentId], references: [id])
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 }
 
